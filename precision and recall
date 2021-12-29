@@ -1,0 +1,28 @@
+#get gt and pred in matrix form
+    gt_class=np.array(gt_classes)
+    pred_class=np.array(pred_classes)
+    
+    #initialize boundary value to know IOU
+    threshold=0.5
+    
+    #assign value above it
+    xn,yn=np.where(ious>=0.5)
+    tp=0
+    fp=0
+    
+    # look into array for same value of gt_class and pred_class
+    #increment tp and fp respectively
+    for x,y in zip(xn,yn):
+        if gt_class[x]==pred_class[y]:
+            tp+=1
+        else:
+            fp+=1
+    # remaining portion be false negative
+    found_gt=len(np.unique(xn))
+    fn=len(gt_class)-found_gt
+    
+    #calculate it
+    precision= tp/float(tp+fp)
+    recall=tp/float(tp+fn)
+    
+    return precision, recall
